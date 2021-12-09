@@ -14,18 +14,31 @@ On commence par installer des packages utiles :
 Ensuite, on va ajouter les repos de docker au repos du système.
 Pour ce faire, on commence par télécharger la clef publique :
 ```bash
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt-key fingerprint 0EBFCD88
 ```
 Ensuite, on ajoute le repo :
 ```bash
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
 ```
 Une fois que c'est fait, on update les repos et on installe docker :
  ```bash
- sudo apt-get update
- sudo apt-get install docker-ce docker-ce-cli containerd.io
+ sudo apt-get update -y
+sudo apt-get install -y docker-ce
+sudo usermod -aG docker $USER
+```
+
+Ensuite, on va automatiser le lancement du service :
+ ```bash
+# automatiser le démarrage du démon docker
+echo "sudo service docker status || sudo service docker start" >> ~/.bashrc
+ 
+# désactiver la demande de mot de passe pour gérer le service docker
+echo "%docker ALL=(ALL) NOPASSWD: /usr/sbin/service docker *" | sudo tee -a /etc/sudoers
 ```
 
 Enfin, on va installer portainer pour visualiser nos packets :
