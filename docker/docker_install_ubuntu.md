@@ -41,7 +41,7 @@ echo "sudo service docker status || sudo service docker start" >> ~/.bashrc
 echo "%docker ALL=(ALL) NOPASSWD: /usr/sbin/service docker *" | sudo tee -a /etc/sudoers
 ```
 
-Enfin, on va installer portainer pour visualiser nos packets :
+On va ensuite installer portainer pour visualiser nos packets :
  ```bash
 docker volume create portainer_data
 docker run -d -p 8000:8000 -p 9000:9000 --name portainer \
@@ -50,6 +50,18 @@ docker run -d -p 8000:8000 -p 9000:9000 --name portainer \
     -v portainer_data:/data \
     portainer/portainer-ce:latest
 ```
+Enfin, on va déclarer à powershell qu'on a installé docker sur Ubuntu...
+Pour cela, on va éditer et ajouter ces lignes dans le fichier **profile.ps1** dans **%USERPROFILE%\Documents\WindowsPowerShell** :
+
+># region docker initialize
+>$DOCKER_DISTRO = "ubuntu"
+>function docker {
+>    wsl -d $DOCKER_DISTRO docker @Args
+>}
+>function docker-compose {
+>    wsl -d $DOCKER_DISTRO docker-compose @Args
+>}
+>#endregion
 
 
 ## Sources
