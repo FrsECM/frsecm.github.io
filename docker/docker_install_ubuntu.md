@@ -53,15 +53,17 @@ docker run -d -p 8000:8000 -p 9000:9000 --name portainer \
 Enfin, on va déclarer à powershell qu'on a installé docker sur Ubuntu...
 Pour cela, on va éditer et ajouter ces lignes dans le fichier **profile.ps1** dans **%USERPROFILE%\Documents\WindowsPowerShell** :
 
-># region docker initialize
->$DOCKER_DISTRO = "ubuntu"
->function docker {
->    wsl -d $DOCKER_DISTRO docker @Args
->}
->function docker-compose {
->    wsl -d $DOCKER_DISTRO docker-compose @Args
->}
->#endregion
+```bash
+# region docker initialize
+$DOCKER_DISTRO = "ubuntu"
+function docker {
+    wsl -d $DOCKER_DISTRO docker @Args
+}
+function docker-compose {
+    wsl -d $DOCKER_DISTRO docker-compose @Args
+}
+#endregion
+```
 
 
 ## Sources
